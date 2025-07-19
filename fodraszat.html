@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kazinczbarcika dream hause - Időpontfoglalás</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("Otv0xT-01s9B5ozDt"); // ← Felhasználói kulcsod
+    })();
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-image: url('https://i.imgur.com/VYkDoFo.png'), url('https://i.imgur.com/9aN5OPW.png'), url('https://i.imgur.com/kBn0Ln2.png');
+      background-repeat: repeat;
+      background-position: top left, center center, bottom right;
+      background-size: 100px, 120px, 80px;
+    }
+    .fade-in {
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .glass {
+      backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 via-white to-gray-200 text-gray-900 px-4 py-8">
+  <header class="text-center mb-14">
+    <h1 class="text-5xl font-bold text-gray-900 mb-3">Kazinczbarcika dream hause</h1>
+    <p class="text-lg text-gray-600">Professzionális borbélyszolgáltatások. Stílus, precizitás, időre.</p>
+  </header>
+
+  <main class="fade-in">
+    <section class="text-center mb-16">
+      <h2 class="text-3xl font-semibold mb-8">Szolgáltatásaink</h2>
+      <div class="flex flex-col items-center space-y-3 text-lg text-gray-700">
+        <div class="bg-white shadow rounded-xl px-6 py-3 w-72 flex justify-between items-center">
+          <span>💈 Hajvágás</span> <strong>4 200 Ft</strong>
+        </div>
+         <div class="bg-white shadow rounded-xl px-6 py-3 w-72 flex justify-between items-center">
+          <span>💈 Haj&Szakáll</span> <strong>6 000 Ft</strong>
+        </div>
+        <div class="bg-white shadow rounded-xl px-6 py-3 w-72 flex justify-between items-center">
+          <span>🧔 Szakálligazítás</span> <strong>3 000 Ft</strong>
+        </div>
+         <div class="bg-white shadow rounded-xl px-6 py-3 w-72 flex justify-between items-center">
+          <span>💈Cérnával szemöldök szedés </span> <strong>1 000 Ft</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="flex flex-wrap justify-center gap-6 mb-16" id="barber-list"></section>
+
+    <form id="bookingForm" onsubmit="return sendEmail(event)" class="glass max-w-lg mx-auto bg-white/60 shadow-xl rounded-2xl p-8 space-y-5 hidden">
+      <input type="hidden" name="barber" id="barberInput" />
+      <h2 class="text-2xl font-semibold text-center mb-4" id="barberTitle"></h2>
+      <input type="text" name="name" placeholder="Teljes név" required class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" />
+      <input type="email" name="email" placeholder="Email cím" required class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" />
+      <select name="service" required class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black">
+        <option value="">Válassz szolgáltatást</option>
+        <option value="Hajvágás">Hajvágás - 4200 Ft</option>
+         <option value="Haj&Szakáll">Haj&Szakáll- 6000 Ft</option>
+        <option value="Szakálligazítás">Szakálligazítás - 3 000 Ft</option>
+        <option value="Cérnával szemöldök szedés">Cérnával szemöldök szedés- 1 000 Ft</option>
+      </select>
+      <input type="datetime-local" name="datetime" required class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" />
+      <textarea name="message" placeholder="Megjegyzés (nem kötelező)" class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"></textarea>
+      <button type="submit" class="bg-black text-white w-full py-3 rounded-lg hover:bg-gray-800 transition">Foglalás elküldése</button>
+    </form>
+
+    <div id="successMessage" class="max-w-md mx-auto mt-6 text-green-800 bg-green-100 p-4 rounded-lg text-center hidden">
+      ✅ Köszönjük! Foglalásod sikeresen elküldve.
+    </div>
+  </main>
+
+  <footer class="bg-black text-white text-center py-8 mt-20 text-sm">
+    <p class="mb-1"><strong>Kapcsolat:</strong> meszarosadam199@gmail.com | +36 30 123 4567</p>
+    <p><strong>Nyitvatartás:</strong> H-P: 10:00 - 18:00, Sz: 10:00 - 14:00, V: Zárva</p>
+     Kazinczbarcika Jókai tér 1
+    <p class="mt-2 text-gray-400">&copy; 2025 Kazinczbarcika dream hause. Minden jog fenntartva.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const barbers = ["Klenics", "Pistike",];
+      const barberList = document.getElementById("barber-list");
+      const bookingForm = document.getElementById("bookingForm");
+      const barberInput = document.getElementById("barberInput");
+      const barberTitle = document.getElementById("barberTitle");
+      const successMessage = document.getElementById("successMessage");
+
+      barbers.forEach(name => {
+        const card = document.createElement("div");
+        card.className = "bg-white shadow-lg rounded-xl p-6 w-64 text-center hover:shadow-2xl transition duration-300";
+        card.innerHTML = `
+          <h3 class='font-semibold text-xl mb-3 text-gray-800'>${name}</h3>
+          <button class='bg-black text-white px-5 py-2 rounded-lg hover:bg-gray-800 transition'>Foglalás</button>
+        `;
+        card.querySelector("button").addEventListener("click", () => {
+          barberInput.value = name;
+          barberTitle.textContent = `Foglalás - ${name}`;
+          bookingForm.classList.remove("hidden");
+          successMessage.classList.add("hidden");
+          bookingForm.scrollIntoView({ behavior: "smooth" });
+        });
+        barberList.appendChild(card);
+      });
+
+      window.sendEmail = function (e) {
+        e.preventDefault();
+        emailjs.sendForm("service_lb3f17h", "template_xe9f79t", e.target)
+          .then(() => {
+            bookingForm.reset();
+            bookingForm.classList.add("hidden");
+            successMessage.classList.remove("hidden");
+            successMessage.scrollIntoView({ behavior: "smooth" });
+          })
+          .catch(() => {
+            alert("Hiba történt a küldés során. Ellenőrizd az internetkapcsolatot vagy az EmailJS beállításokat.");
+          });
+        return false;
+      };
+    });
+  </script>
+</body>
+</html>
+
